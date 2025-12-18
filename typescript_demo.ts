@@ -79,6 +79,116 @@ function getLength(obj: string | string[]) {
 
 
 
+// TypeScript Cheat Sheet
+
+{
+  class ABC {
+
+  }
+
+  const abc = new ABC();
+}
+
+{
+  class Bag {
+    private item: any;
+  }
+}
+
+{
+  class Bag {
+    #item: any;
+  }
+
+  const a: Bag = new Bag();
+
+  class C implements Bag {
+
+  }
+}
+
+{
+  class User {
+
+    static #userCount = 0;
+    static registerUser(user: User) {
+
+    }
+
+    static { this.#userCount = -1; }
+
+    id: string;
+    email: string;
+    displayName?: boolean;
+    name!: string;
+    #attributes: Map<any, any>;
+    roles = ["user"];
+    readonly createdAt = new Date();
+
+    constructor(id: string, email: string) {
+      this.id = id;
+      this.email = email;
+    }
+
+    setName(name: string) { this.name = name }
+    verifyName = (name: string) => {
+
+    }
+
+    get accountId(): string { return this.id }
+    set accountId(value: string) { this.id = value }
+
+    private makeRequest() {
+
+    }
+
+    protected handleRequest() {
+
+    }
+
+  }
+
+}
+
+{
+  class Box<Type> {
+    contents: Type;
+    constructor(value: Type) {
+      this.contents = value;
+    }
+  }
+
+  const stringBox = new Box("a package");
+}
+
+{
+  class Location {
+    constructor(public x: number, public y: number) {
+
+    }
+  }
+
+  const loc = new Location(20, 40);
+  loc.x // 20
+  loc.y // 40
+}
+
+{
+  abstract class Animal {
+    abstract getName(): string;
+    printName() {
+      console.log("Hello" + this.getName());
+    }
+  }
+
+  class Dog extends Animal {
+    getName(): string { return ""; }
+
+  }
+}
+
+
+
 
 
 
@@ -1255,15 +1365,392 @@ let fruit = fruits.at(2);
   let result = text.match(pattern);
 }
 
+// w3schools>Basic JavaScript>JS Versions>JS 2009 (ES5)
+
+{
+  let str = "HELLO WORLD";
+  str.charAt(0);     // returns H
+}
+
+{
+  let str = "HELLO WORLD";
+  str[0];           // returns H
+}
+
+{
+  let obj = {name: "John", new: "yes"}
+}
+
+{
+  var str = "       Hello World!        ";
+  console.log(str.trim());
+}
+
+{
+  const fruits = ["Banana", "Orange", "Apple", "Mango"];
+
+  let result = Array.isArray(fruits);
+}
+
+{
+  const numbers = [45, 4, 9, 16, 25];
+
+  numbers.forEach(myFunction);
+}
+
+{
+  const numbers1 = [45, 4, 9, 16, 25];
+  const numbers2 = numbers1.map(myFunction);
+
+  function myFunction(value) {
+    return value * 2;
+  }
+}
+
+{
+  const numbers = [45, 4, 9, 16, 25];
+  const over18 = numbers.filter(myFunction);
+
+  function myFunction(value) {
+    return value > 18;
+  }
+}
+
+{
+  const numbers = [45, 4, 9, 16, 25];
+  let sum = numbers.reduce(myFunction);
+
+  function myFunction(total, value) {
+    return total + value;
+  }
+}
+
+{
+  const numbers1 = [45, 4, 9, 16, 25];
+  let sum = numbers1.reduceRight(myFunction);
+
+  function myFunction(total, value) {
+    return total + value;
+  }
+}
+
+{
+  const numbers = [45, 4, 9, 16, 25];
+  let allOver18 = numbers.every(myFunction);
+
+  function myFunction(value) {
+    return value > 18;
+  }
+}
+
+{
+  const numbers = [45, 4, 9, 16, 25];
+  let allOver18 = numbers.some(myFunction);
+
+  function myFunction(value) {
+    return value > 18;
+  }
+}
+
+{
+  const fruits = ["Apple", "Orange", "Apple", "Mango"];
+  let position = fruits.indexOf("Apple") + 1;
+}
+
+{
+  const fruits = ["Apple", "Orange", "Apple", "Mango"];
+  let position = fruits.lastIndexOf("Apple") + 1;
+}
+
+{
+  const txt = '{"name":"John", "age":30, "city":"New York"}'
+
+  const myObj = JSON.parse(txt);
+}
+
+{
+  const myObj = {name:"John", age:30, city:"New York"};
+  const myJSON = JSON.stringify(myObj);
+}
+
+{
+  let timInMSs = Date.now();
+}
+
+{
+  const d = new Date();
+}
+
+{
+  // Create an object:
+  const Person = {
+    firstName: "John",
+    lastName : "Doe",
+    get fullName() {
+      return this.firstName + " " + this.lastName;
+    }
+  };
+
+  // Display data from the object using a getter:
+  const str = Person.fullName;
+}
+
+{
+  const Person = {
+    firstName: "John",
+    lastName : "Doe",
+    language : "NO",
+    set lang(value) {
+      this.language = value.toUpperCase();
+    }
+  };
+
+  // Set an object property using a setter:
+  person.lang = "en";
+}
+
+{
+  const Person = {
+    firstName: "John",
+    lastName : "Doe",
+    language : "NO",
+    get lang() {
+      return this.language;
+    },
+    set lang(value) {
+      this.language = value;
+    }
+  };
+
+  // Set an object property using a setter:
+  person.lang = "en";
+}
+
+{
+  // Create an Object:
+  const person = {
+    firstName: "John",
+    lastName : "Doe",
+    language : "NO",
+  };
+
+  // Change a Property:
+  Object.defineProperty(person, "language", {
+    value: "EN",
+    writable : true,
+    enumerable : true,
+    configurable : true
+  });
+
+  // Enumerate Properties
+  let txt = "";
+  for (let x in person) {
+    txt += person[x] + "<br>";
+  }
+}
+
+{
+  // Create an Object:
+  const person = {
+    firstName: "John",
+    lastName : "Doe",
+    language : "NO",
+  };
+
+  // Change a Property:
+  Object.defineProperty(person, "language", {
+    value: "EN",
+    writable : true,
+    enumerable : false,
+    configurable : true
+  });
+
+  // Enumerate Properties
+  let txt = "";
+  for (let x in person) {
+    txt += person[x];
+  }
+}
+
+{
+  // Create an Object:
+  const person = {
+    firstName: "John",
+    lastName : "Doe",
+    language : "NO"
+  };
+
+  // Change a Property:
+  Object.defineProperty(person, "language", {
+    get : function() { return language },
+    set : function(value) { language = value.toUpperCase()}
+  });
+
+  // Change Language
+  person.language = "en";
+}
+
+{
+  // Create an Object:
+  const person = {
+    firstName: "John",
+    lastName: "Doe"
+  };
+
+  // Create new Object
+  const man = Object.create(person);
+  man.firstName = "Peter";
+}
+
+{
+  // Create an Object
+  const person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 50,
+    eyeColor: "blue"
+  };
+
+  // Get the Keys
+  const keys = Object.keys(person);
+}
+
+{
+  const person = {
+    firstName:"John",
+    lastName: "Doe",
+    fullName: function () {
+      return this.firstName + " " + this.lastName;
+    }
+  }
+
+  const member = {
+    firstName:"Hege",
+    lastName: "Nilsen",
+  }
+
+  let fullName = person.fullName.bind(member);
+}
+
+{
+  let person = {
+    firstName: "John",
+    lastName: " Doe",
+    age: 46,
+  }
+}
+
+{
+  let points = [
+    1,
+    5,
+    10,
+    25,
+    40,
+    100,
+  ];
+}
+
+{
+  // Allowed:
+  let person = '{"firstName":"John", "lastName":"Doe", "age":46}'
+  JSON.parse(person)
+
+  // Not allowed:
+  //let person2 = '{"firstName":"John", "lastName":"Doe", "age":46,}'
+  //JSON.parse(person2)
+}
+
+{
+  // Allowed:
+  let points = [40, 100, 1, 5, 25, 10];
+
+  // Not allowed:
+  let points2 = [40, 100, 1, 5, 25, 10,];
+}
+
+
+// w3schools>Basic JavaScript>JS Versions>JS 1999 (ES3)
+
+{
+  let text = "Visit W3Schools";
+  let n = text.search(/w3schools/i);
+}
+
+{
+  let x = 5;
+
+  try {
+    x = y + 1;
+  } catch(err) {
+    let text = err.name;
+  }
+}
+
+{
+  switch (new Date().getDay()) {
+    case 0:
+      day = "Sunday";
+      break;
+    case 1:
+      day = "Monday";
+      break;
+    case 2:
+      day = "Tuesday";
+      break;
+    case 3:
+      day = "Wednesday";
+      break;
+    case 4:
+      day = "Thursday";
+      break;
+    case 5:
+      day = "Friday";
+      break;
+    case 6:
+      day = "Saturday";
+  }
+}
+
+{
+  let text = "";
+  let i = 0;
+
+  do {
+    text += "The number is " + i;
+    i++;
+  }
+  while (i < 10);
+}
+
 {
   
 }
+
 {
   
 }
+
 {
   
 }
+
+{
+  
+}
+
+{
+  
+}
+
+{
+  
+}
+
+{
+  
+}
+
 {
   
 }
@@ -3758,3 +4245,628 @@ while (true) {
 
 
 console.log("END OF JAVASCRIPT DEMO! THANKS!");
+
+
+// Node.js Tutorial
+
+{
+  /*
+  let http = require('http');
+
+  http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello World!');
+  }).listen(8080);
+  */
+}
+
+{
+  const os = require('os');
+  console.log(os.platform());
+}
+
+{
+  // Show the V8 engine version used by your Node.js installation
+  console.log(`V8 version: ${process.versions.v8}`);
+}
+
+{
+  // Get information about V8's heap memory usage
+  const v8 = require('v8');
+  const heapStats = v8.getHeapStatistics();
+
+  console.log('Heap size limit:', (heapStats.heap_size_limit / 1024 / 1024).toFixed(2), 'MB');
+  console.log('Total heap size:', (heapStats.total_heap_size / 1024 / 1024).toFixed(2), 'MB');
+  console.log('Used heap size:', (heapStats.used_heap_size / 1024 / 1024).toFixed(2), 'MB');
+}
+
+{
+  console.log('1. Start');
+
+  // Next tick queue
+  process.nextTick(() => console.log('2. Next tick'));
+
+  // Microtask queue (Promise)
+  Promise.resolve().then(() => console.log('3. Promise'));
+
+  // Timer phase
+  setTimeout(() => console.log('4. Timeout'), 0);
+
+  // Check phase
+  setImmediate(() => console.log('5. Immediate'));
+
+  console.log('6. End');
+}
+
+{
+  // Create a new Promise
+  const myPromise = new Promise((resolve, reject) => {
+    // Simulate an async operation (e.g., API call, file read)
+    setTimeout(() => {
+      const success = Math.random() > 0.5;
+      
+      if (success) {
+        resolve('Operation completed successfully');
+      } else {
+        reject(new Error('Operation failed'));
+      }
+    }, 1000); // Simulate delay
+  });
+
+  // Using the Promise
+  myPromise
+    .then(result => console.log('Success:', result))
+    .catch(error => console.error('Error:', error.message));
+}
+
+{
+  function getUser(userId) {
+    return new Promise((resolve, reject) => {
+      // Simulating database call
+      setTimeout(() => {
+        resolve({ id: userId, name: 'John' });
+      }, 1000);
+    });
+  }
+
+  function getUserPosts(user) {
+    return new Promise((resolve, reject) => {
+      // Simulating API call
+      setTimeout(() => {
+        resolve(['Post 1', 'Post 2', 'Post 3']);
+      }, 1000);
+    });
+  }
+
+  // Chain the promises
+  getUser(123)
+    .then(user => {
+      console.log('User:', user);
+      return getUserPosts(user);
+    })
+    .then(posts => {
+      console.log('Posts:', posts);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+{
+  const fs = require('fs').promises;
+  const promise1 = Promise.resolve('First result');
+  const promise2 = new Promise((resolve) => setTimeout(() => resolve('Second result'), 1000));
+  const promise3 = fs.readFile('typescript_demo.ts', 'utf8'); // Read local file instead of fetch
+
+  Promise.all([promise1, promise2, promise3])
+    .then(results => {
+      console.log('Results:', results);
+      // results[0] is from promise1
+      // results[1] is from promise2
+      // results[2] is the content of data.txt
+    })
+    .catch(error => {
+      console.error('Error in one of the promises:', error);
+    });
+}
+
+{
+  const promise1 = new Promise(resolve => setTimeout(() => resolve('First result'), 1000));
+  const promise2 = new Promise(resolve => setTimeout(() => resolve('Second result'), 500));
+
+  Promise.race([promise1, promise2])
+    .then(result => {
+      console.log('Fastest result:', result);
+      // Will log 'Second result' because promise2 is faster
+    });
+}
+
+{
+  async function getData() {
+    console.log('Starting...');
+    const result = await someAsyncOperation();
+    console.log(`Result: ${result}`);
+    return result;
+  }
+
+  function someAsyncOperation() {
+    return new Promise(resolve => {
+      setTimeout(() => resolve('Operation completed'), 1000);
+    });
+  }
+
+  // Call the async function
+  getData().then(data => console.log('Final data:', data));
+
+}
+
+{
+  const assert = require('assert').strict;
+
+  // Function to test
+  function add(a, b) {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+      throw new TypeError('Inputs must be numbers');
+    }
+    return a + b;
+  }
+  // Test cases
+  assert.strictEqual(add(2, 3), 5, '2 + 3 should equal 5');
+  // Test error case
+  assert.throws(
+    () => add('2', 3),
+    TypeError,
+    'Should throw TypeError for non-number input'
+  );
+  console.log('All tests passed!');
+}
+
+{
+  const util = require('util');
+
+  // JavaScript built-in types
+  console.log('util.types.isDate(new Date()):',
+    util.types.isDate(new Date()));
+  console.log('util.types.isRegExp(/test/):',
+    util.types.isRegExp(/test/));
+  console.log('util.types.isPromise(Promise.resolve()):',
+    util.types.isPromise(Promise.resolve()));
+
+  // Node.js-specific types
+  console.log('util.types.isArrayBuffer(new ArrayBuffer(0)):',
+    util.types.isArrayBuffer(new ArrayBuffer(0)));
+  console.log('util.types.isSharedArrayBuffer(new SharedArrayBuffer(0)):',
+    util.types.isSharedArrayBuffer(new SharedArrayBuffer(0)));
+  console.log('util.types.isUint8Array(new Uint8Array()):',
+    util.types.isUint8Array(new Uint8Array()));
+
+  // More advanced types
+  console.log('util.types.isProxy(new Proxy({}, {})):',
+    util.types.isProxy(new Proxy({}, {})));
+  console.log('util.types.isExternal(Requiring C++ binding):',
+    'Not demonstrated in this example');
+}
+
+{
+  const util = require('util');
+
+  // Original function
+  function oldFunction(x, y) {
+    return x + y;
+  }
+
+  // Deprecate the function
+  const deprecatedFunction = util.deprecate(
+    oldFunction,
+    'oldFunction() is deprecated. Use newFunction() instead.',
+    'DEP0001'
+  );
+
+  // New function
+  function newFunction(x, y) {
+    return x + y;
+  }
+
+  // Using the deprecated function will show a warning
+  console.log('Result:', deprecatedFunction(5, 10));
+
+  // Using the new function
+  console.log('Result:', newFunction(5, 10));
+}
+
+{
+  const util = require('util');
+
+  // Create debug loggers for different sections
+  const debugApp = util.debuglog('app');
+  const debugDB = util.debuglog('db');
+  const debugAuth = util.debuglog('auth');
+
+  // These messages only appear when NODE_DEBUG includes 'app'
+  debugApp('Application starting...');
+  debugApp('Configuration loaded from %j', { source: 'config.json' });
+
+  // These messages only appear when NODE_DEBUG includes 'db'
+  debugDB('Connected to database');
+  debugDB('Query executed: %s', 'SELECT * FROM users');
+
+  // These messages only appear when NODE_DEBUG includes 'auth'
+  debugAuth('User authenticated: %s', 'john.doe');
+
+  // To see these messages, run your app with:
+  // NODE_DEBUG=app,db node your-app.js
+  console.log('Application running normally (this always shows)');
+}
+
+{
+  // Array spread - converting string to array of characters
+  const chars = [...'hello'];
+  console.log(chars);
+}
+
+{
+  // Rest parameter in functions
+  function sum(...numbers) {
+    return numbers.reduce((total, num) => total + num, 0);
+  }
+  console.log(sum(1, 2, 3, 4, 5));
+}
+
+{
+  // Basic default parameter
+  function greet(name = 'Guest') {
+    return `Hello, ${name}!`;
+  }
+
+  console.log(greet());
+  console.log(greet('Kai'));
+}
+
+{
+  // Simple class with constructor and method
+  class Person {
+    constructor(name, age) {
+      this.name = name;
+      this.age = age;
+    }
+
+    greet() {
+      return `Hello, I'm ${this.name}!`;
+    }
+  }
+
+  // Create an instance
+  const person = new Person('Alice', 25);
+  console.log(person.greet()); // Hello, I'm Alice!
+}
+
+{
+  // Parent class
+  class Animal {
+    constructor(name) {
+      this.name = name;
+    }
+
+    speak() {
+      return `${this.name} makes a sound.`;
+    }
+  }
+
+  // Child class
+  class Dog extends Animal {
+    speak() {
+      return `${this.name} barks!`;
+    }
+  }
+
+  const dog = new Dog('Rex');
+  console.log(dog.speak());
+
+}
+
+{
+  // Class with private field (# prefix)
+  class Counter {
+    #count = 0; // Private field
+
+    increment() {
+      this.#count++;
+    }
+
+    getCount() {
+      return this.#count;
+    }
+  }
+
+  const counter = new Counter();
+  counter.increment();
+  console.log(counter.getCount());
+  // console.log(counter.#count); // Error: Private field
+}
+
+{
+  // Creating a promise
+  const fetchData = () => {
+    return new Promise((resolve, reject) => {
+      // Simulating an API call
+      setTimeout(() => {
+        const data = { id: 1, name: 'Product' };
+        const success = true;
+
+        if (success) {
+          resolve(data); // Fulfilled with data
+        } else {
+          reject(new Error('Failed to fetch data')); // Rejected with error
+        }
+      }, 1000);
+    });
+  };
+
+  // Using a promise
+  console.log('Fetching data...');
+
+  fetchData()
+    .then(data => {
+      console.log('Data received:', data);
+      return data.id; // Return value is passed to the next .then()
+    })
+    .then(id => {
+      console.log('Processing ID:', id);
+    })
+    .catch(error => {
+      console.error('Error:', error.message);
+    })
+    .finally(() => {
+      console.log('Operation completed (success or failure)');
+    });
+
+  console.log('Continuing execution while fetch happens in background');
+}
+
+{
+  // Function that returns a promise
+  const fetchUser = (id) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (id > 0) {
+          resolve({ id, name: `User ${id}` });
+        } else {
+          reject(new Error('Invalid user ID'));
+        }
+      }, 1000);
+    });
+  };
+
+  // Using async/await
+  async function getUserData(id) {
+    try {
+      console.log('Fetching user...');
+      const user = await fetchUser(id); // Waits for the promise to resolve
+      console.log('User data:', user);
+
+      // You can use the result directly
+      return `${user.name}'s profile`;
+    } catch (error) {
+      // Handle errors with try/catch
+      console.error('Error fetching user:', error.message);
+      return 'Guest profile';
+    }
+  }
+
+  // Async functions always return promises
+  console.log('Starting...');
+  getUserData(1)
+    .then(result => console.log('Result:', result))
+    .catch(error => console.error('Unexpected error:', error));
+  console.log('This runs before getUserData completes');
+}
+
+{
+  function getUserCity(user) {
+    return user?.address?.city;
+  }
+
+  const user1 = {
+    name: 'Alice',
+    address: { city: 'New York', country: 'USA' }
+  };
+
+  const user2 = {
+    name: 'Bob'
+  };
+
+  const user3 = null;
+
+  console.log(getUserCity(user1)); // 'New York'
+  console.log(getUserCity(user2)); // undefined
+  console.log(getUserCity(user3)); // undefined
+}
+
+{
+  function calculatePrice(price, tax) {
+    // Only uses default if tax is null or undefined
+    return price + (tax ?? 0.1) * price;
+  }
+
+  console.log(calculatePrice(100, 0)); // 100 (correct! tax of 0 was used)
+  console.log(calculatePrice(100, null)); // 110 (using default)
+}
+
+{
+  // Helper function to simulate an API call
+  function fetchData(id) {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(`Data for ID ${id}`), 1000);
+    });
+  }
+
+  // Sequential execution (~3 seconds total)
+  async function fetchSequential() {
+    console.time('sequential');
+    const data1 = await fetchData(1);
+    const data2 = await fetchData(2);
+    const data3 = await fetchData(3);
+    console.timeEnd('sequential');
+    return [data1, data2, data3];
+  }
+
+  // Run the sequential example
+  fetchSequential().then(results => {
+    console.log('Sequential results:', results);
+  });
+}
+
+{
+  // Helper function to simulate an API call
+  function fetchData(id) {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(`Data for ID ${id}`), 1000);
+    });
+  }
+
+  // Parallel execution (~1 second total)
+  async function fetchParallel() {
+    console.time('parallel');
+    const results = await Promise.all([
+      fetchData(1),
+      fetchData(2),
+      fetchData(3)
+    ]);
+    console.timeEnd('parallel');
+    return results;
+  }
+
+  // Run the parallel example
+  fetchParallel().then(results => {
+    console.log('Parallel results:', results);
+  });
+}
+
+{
+  // Process identification
+  console.log('Process ID (PID):', process.pid);
+
+  // Platform information
+  console.log('Platform:', process.platform);
+  console.log('Node.js version:', process.version);
+
+  // Memory usage (in bytes)
+  console.log('Memory usage:', process.memoryUsage());
+
+  // Command line arguments
+  console.log('Arguments:', process.argv);
+}
+
+{
+  // Primitive types
+  let isDone: boolean = false;
+  let count: number = 10;
+  let name: string = 'TypeScript';
+
+  // Arrays
+  let numbers: number[] = [1, 2, 3];
+  let names: Array<string> = ['Alice', 'Bob'];
+
+  // Tuples
+  let user: [string, number] = ['Alice', 25];
+
+  // Enums
+  enum Color {Red, Green, Blue}
+  let color: Color = Color.Green;
+}
+
+{
+  // Interface
+  interface User {
+    id: number;
+    name: string;
+    email?: string; // Optional property
+  }
+
+  // Type alias
+  type Point = {
+    x: number;
+    y: number;
+  };
+
+  // Using the interface
+  function printUser(user: User) {
+    console.log(`User: ${user.name}`);
+  }
+}
+
+{
+  // Union type
+  function formatId(id: string | number) {
+    return `ID: ${id}`;
+  }
+
+  // Intersection type
+  type User = { name: string } & { id: number };
+}
+
+{
+  type Fish = { swim: () => void };
+  type Bird = { fly: () => void };
+
+  function isFish(pet: Fish | Bird): pet is Fish {
+    return 'swim' in pet;
+  }
+}
+
+{
+  // Generic function with constraints
+  function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+    return obj[key];
+  }
+
+  // Generic interface with default type
+  interface PaginatedResponse<T = any> {
+    data: T[];
+    total: number;
+    page: number;
+    limit: number;
+  }
+
+  // Using generic types with async/await in Node.js
+  async function fetchData<T>(url: string): Promise<T> {
+    const response = await fetch(url);
+    return response.json();
+  }
+}
+
+{
+  // Mapped types
+  type ReadonlyUser = {
+    readonly [K in keyof User]: User[K];
+  };
+
+  // Conditional types
+  type NonNullableUser = NonNullable<User | null | undefined>; // User
+
+  // Type inference with conditional types
+  type GetReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+  function getUser() {
+    return { id: 1, name: 'Alice' } as const;
+  }
+  type UserReturnType = GetReturnType<typeof getUser>; // { readonly id: 1; readonly name: "Alice"; }
+}
+
+{
+  // Type inference with variables
+  const name = 'Alice'; // TypeScript infers type: string
+  const age = 30; // TypeScript infers type: number
+  const active = true; // TypeScript infers type: boolean
+
+  // Type inference with arrays
+  const numbers = [1, 2, 3]; // TypeScript infers type: number[]
+  const mixed = [1, 'two', true]; // TypeScript infers type: (string | number | boolean)[]
+
+  // Type inference with functions
+  function getUser() {
+    return { id: 1, name: 'Alice' }; // Return type inferred as { id: number; name: string; }
+  }
+
+  const user = getUser(); // user inferred as { id: number; name: string; }
+  console.log(user.name); // Type checking works on inferred properties
+}
