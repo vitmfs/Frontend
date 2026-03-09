@@ -1,3 +1,1105 @@
+//https://www.typescriptlang.org/docs/
+//https://www.typescriptlang.org/docs/handbook/intro.html
+
+const objectTypes = () => {
+
+  
+};
+
+const moreOnFunctions = () => {
+  function greeter(fn: (a: string) => void) {
+    fn("Hello, World");
+  }
+  
+  function printToConsole(s: string) {
+    console.log(s);
+  }
+  
+  greeter(printToConsole);
+
+  type GreetFunction = (a: string) => void;
+  function greeter(fn: GreetFunction) {
+    // ...
+  }
+
+  type DescribableFunction = {
+    description: string;
+    (someArg: number): boolean;
+  };
+  function doSomething(fn: DescribableFunction) {
+    console.log(fn.description + " returned " + fn(6));
+  }
+  
+  function myFunc(someArg: number) {
+    return someArg > 3;
+  }
+  myFunc.description = "default description";
+  
+  doSomething(myFunc);
+
+  type SomeConstructor = {
+    new (s: string): SomeObject;
+  };
+  function fn(ctor: SomeConstructor) {
+    return new ctor("hello");
+  }
+
+  interface CallOrConstruct {
+    (n?: number): string;
+    new (s: string): Date;
+  }
+  
+  function fn(ctor: CallOrConstruct) {
+    // Passing an argument of type `number` to `ctor` matches it against
+    // the first definition in the `CallOrConstruct` interface.
+    console.log(ctor(10));
+                
+    //(parameter) ctor: CallOrConstruct
+    (n?: number) => string
+    
+      // Similarly, passing an argument of type `string` to `ctor` matches it
+      // against the second definition in the `CallOrConstruct` interface.
+      console.log(new ctor("10"));
+                      
+    //(parameter) ctor: CallOrConstruct
+    //new (s: string) => Date
+  }
+  
+  fn(Date);
+
+  function firstElement(arr: any[]) {
+    return arr[0];
+  }
+
+  function firstElement<Type>(arr: Type[]): Type | undefined {
+    return arr[0];
+  }
+
+  // s is of type 'string'
+  const s = firstElement(["a", "b", "c"]);
+  // n is of type 'number'
+  const n = firstElement([1, 2, 3]);
+  // u is of type undefined
+  const u = firstElement([]);
+
+  function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
+    return arr.map(func);
+  }
+  
+  // Parameter 'n' is of type 'string'
+  // 'parsed' is of type 'number[]'
+  const parsed = map(["1", "2", "3"], (n) => parseInt(n));
+
+  function longest<Type extends { length: number }>(a: Type, b: Type) {
+    if (a.length >= b.length) {
+      return a;
+    } else {
+      return b;
+    }
+  }
+  
+  // longerArray is of type 'number[]'
+  const longerArray = longest([1, 2], [1, 2, 3]);
+  // longerString is of type 'alice' | 'bob'
+  const longerString = longest("alice", "bob");
+  // Error! Numbers don't have a 'length' property
+  const notOK = longest(10, 100);
+
+  function minimumLength<Type extends { length: number }>(
+    obj: Type,
+    minimum: number
+  ): Type {
+    if (obj.length >= minimum) {
+      return obj;
+    } else {
+      return { length: minimum };
+      // Type '{ length: number; }' is not assignable to type 'Type'.
+      //   '{ length: number; }' is assignable to the constraint of type 'Type', but 'Type' could be instantiated with a different subtype of constraint '{ length: number; }'.
+    }
+  }
+
+  // 'arr' gets value { length: 6 }
+  const arr = minimumLength([1, 2, 3], 6);
+  // and crashes here because arrays have
+  // a 'slice' method, but not the returned object!
+  console.log(arr.slice(0));
+
+  function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
+    return arr1.concat(arr2);
+  }
+
+  //const arr = combine([1, 2, 3], ["hello"]);
+  //Type 'string' is not assignable to type 'number'.
+
+  //const arr = combine<string | number>([1, 2, 3], ["hello"]);
+
+  function firstElement1<Type>(arr: Type[]) {
+    return arr[0];
+  }
+  
+  function firstElement2<Type extends any[]>(arr: Type) {
+    return arr[0];
+  }
+  
+  // a: number (good)
+  const a = firstElement1([1, 2, 3]);
+  // b: any (bad)
+  const b = firstElement2([1, 2, 3]);
+
+  function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
+    return arr.filter(func);
+  }
+  
+  function filter2<Type, Func extends (arg: Type) => boolean>(
+    arr: Type[],
+    func: Func
+  ): Type[] {
+    return arr.filter(func);
+  }
+
+  function greet<Str extends string>(s: Str) {
+    console.log("Hello, " + s);
+  }
+  
+  greet("world");
+
+  function greet(s: string) {
+    console.log("Hello, " + s);
+  }
+
+  function f(n: number) {
+    console.log(n.toFixed()); // 0 arguments
+    console.log(n.toFixed(3)); // 1 argument
+  }
+
+  function f(x?: number) {
+    // ...
+  }
+  f(); // OK
+  f(10); // OK
+
+  function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+    for (let i = 0; i < arr.length; i++) {
+      callback(arr[i], i);
+    }
+  }
+
+  myForEach([1, 2, 3], (a) => console.log(a));
+  myForEach([1, 2, 3], (a, i) => console.log(a, i));
+
+  function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+    for (let i = 0; i < arr.length; i++) {
+      // I don't feel like providing the index today
+      callback(arr[i]);
+    }
+  }
+
+  myForEach([1, 2, 3], (a, i) => {
+    console.log(i.toFixed());
+  //'i' is possibly 'undefined'.
+  });
+
+  function makeDate(timestamp: number): Date;
+  function makeDate(m: number, d: number, y: number): Date;
+  function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
+    if (d !== undefined && y !== undefined) {
+      return new Date(y, mOrTimestamp, d);
+    } else {
+      return new Date(mOrTimestamp);
+    }
+  }
+  const d1 = makeDate(12345678);
+  const d2 = makeDate(5, 5, 5);
+  const d3 = makeDate(1, 3);
+  //No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.
+
+  function fn(x: string): void;
+  function fn() {
+    // ...
+  }
+  // Expected to be able to call with zero arguments
+  fn();
+  //Expected 1 arguments, but got 0.
+
+  function fn(x: boolean): void;
+  // Argument type isn't right
+  function fn(x: string): void;
+  //This overload signature is not compatible with its implementation signature.
+  function fn(x: boolean) {}
+
+  function fn(x: string): string;
+  // Return type isn't right
+  function fn(x: number): boolean;
+  //This overload signature is not compatible with its implementation signature.
+  function fn(x: string | number) {
+    return "oops";
+  }
+
+  function len(s: string): number;
+  function len(arr: any[]): number;
+  function len(x: any) {
+    return x.length;
+  }
+
+  len(""); // OK
+  len([0]); // OK
+  //len(Math.random() > 0.5 ? "hello" : [0]);
+
+  // No overload matches this call.
+  // Overload 1 of 2, '(s: string): number', gave the following error.
+  //   Argument of type 'number[] | "hello"' is not assignable to parameter of type 'string'.
+  //     Type 'number[]' is not assignable to type 'string'.
+  // Overload 2 of 2, '(arr: any[]): number', gave the following error.
+  //   Argument of type 'number[] | "hello"' is not assignable to parameter of type 'any[]'.
+  //     Type 'string' is not assignable to type 'any[]'.
+
+  function len(x: any[] | string) {
+    return x.length;
+  }
+
+  const user = {
+    id: 123,
+  
+    admin: false,
+    becomeAdmin: function () {
+      this.admin = true;
+    },
+  };
+
+  interface DB {
+    filterUsers(filter: (this: User) => boolean): User[];
+  }
+  
+  const db = getDB();
+  const admins = db.filterUsers(function (this: User) {
+    return this.admin;
+  });
+
+  interface DB {
+    filterUsers(filter: (this: User) => boolean): User[];
+  }
+  
+  //const db = getDB();
+  //const admins = db.filterUsers(() => this.admin);
+  // The containing arrow function captures the global value of 'this'.
+  // Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
+
+  // The inferred return type is void
+  function noop() {
+    return;
+  }
+
+  function f1(a: any) {
+    a.b(); // OK
+  }
+  function f2(a: unknown) {
+    a.b();
+    //'a' is of type 'unknown'.
+  }
+
+  function safeParse(s: string): unknown {
+    return JSON.parse(s);
+  }
+  
+  // Need to be careful with 'obj'!
+  const obj = safeParse(someRandomString);
+
+  function fail(msg: string): never {
+    throw new Error(msg);
+  }
+
+  function fn(x: string | number) {
+    if (typeof x === "string") {
+      // do something
+    } else if (typeof x === "number") {
+      // do something else
+    } else {
+      x; // has type 'never'!
+    }
+  }
+
+  function doSomething(f: Function) {
+    return f(1, 2, 3);
+  }
+
+  function multiply(n: number, ...m: number[]) {
+    return m.map((x) => n * x);
+  }
+  // 'a' gets value [10, 20, 30, 40]
+  //const a = multiply(10, 1, 2, 3, 4);
+
+  const arr1 = [1, 2, 3];
+  const arr2 = [4, 5, 6];
+  arr1.push(...arr2);
+
+  // Inferred type is number[] -- "an array with zero or more numbers",
+  // not specifically two numbers
+  //const args = [8, 5];
+  //const angle = Math.atan2(...args);
+  //A spread argument must either have a tuple type or be passed to a rest parameter.
+
+  // Inferred as 2-length tuple
+  const args = [8, 5] as const;
+  // OK
+  const angle = Math.atan2(...args);
+
+  function sum({ a, b, c }) {
+    console.log(a + b + c);
+  }
+  sum({ a: 10, b: 3, c: 9 });
+
+  function sum({ a, b, c }: { a: number; b: number; c: number }) {
+    console.log(a + b + c);
+  }
+
+  // Same as prior example
+  type ABC = { a: number; b: number; c: number };
+  function sum({ a, b, c }: ABC) {
+    console.log(a + b + c);
+  }
+
+  type voidFunc = () => void;
+ 
+  /*S
+  const f1: voidFunc = () => {
+    return true;
+  };
+  
+  const f2: voidFunc = () => true;
+  */
+  
+  const f3: voidFunc = function () {
+    return true;
+  };
+
+  const v1 = f1();
+ 
+  const v2 = f2();
+  
+  const v3 = f3();
+
+  const src = [1, 2, 3];
+  const dst = [0];
+  
+  src.forEach((el) => dst.push(el));
+
+  /*
+  function f2(): void {
+    // @ts-expect-error
+    return true;
+  }
+  
+  const f3 = function (): void {
+    // @ts-expect-error
+    return true;
+  };
+  */
+
+
+};
+
+const Narrowing = () => {
+  function padLeft(padding: number | string, input: string): string {
+    throw new Error("Not implemented yet!");
+  }
+
+  function padLeft(padding: number | string, input: string): string {
+    return " ".repeat(padding) + input;
+  // Argument of type 'string | number' is not assignable to parameter of type 'number'.
+  //   Type 'string' is not assignable to type 'number'.
+  }
+
+  function padLeft(padding: number | string, input: string): string {
+    if (typeof padding === "number") {
+      return " ".repeat(padding) + input;
+    }
+    return padding + input;
+  }
+
+  function padLeft(padding: number | string, input: string): string {
+    if (typeof padding === "number") {
+      return " ".repeat(padding) + input;
+                          
+      //(parameter) padding: number
+    }
+    return padding + input;
+            
+    //(parameter) padding: string
+  }
+
+  function printAll(strs: string | string[] | null) {
+    if (typeof strs === "object") {
+      for (const s of strs) {
+        //'strs' is possibly 'null'.
+        console.log(s);
+      }
+    } else if (typeof strs === "string") {
+      console.log(strs);
+    } else {
+      // do nothing
+    }
+  }
+
+  function getUsersOnlineMessage(numUsersOnline: number) {
+    if (numUsersOnline) {
+      return `There are ${numUsersOnline} online now!`;
+    }
+    return "Nobody's here. :(";
+  }
+
+  // both of these result in 'true'
+  // Boolean("hello"); // type: boolean, value: true
+  // !!"world"; // type: true,    value: true
+  // This kind of expression is always truthy.
+
+  function printAll(strs: string | string[] | null) {
+    if (strs && typeof strs === "object") {
+      for (const s of strs) {
+        console.log(s);
+      }
+    } else if (typeof strs === "string") {
+      console.log(strs);
+    }
+  }
+
+  function printAll(strs: string | string[] | null) {
+    // !!!!!!!!!!!!!!!!
+    //  DON'T DO THIS!
+    //   KEEP READING
+    // !!!!!!!!!!!!!!!!
+    if (strs) {
+      if (typeof strs === "object") {
+        for (const s of strs) {
+          console.log(s);
+        }
+      } else if (typeof strs === "string") {
+        console.log(strs);
+      }
+    }
+  }
+
+  function multiplyAll(
+    values: number[] | undefined,
+    factor: number
+  ): number[] | undefined {
+    if (!values) {
+      return values;
+    } else {
+      return values.map((x) => x * factor);
+    }
+  }
+
+  function example(x: string | number, y: string | boolean) {
+    if (x === y) {
+      // We can now call any 'string' method on 'x' or 'y'.
+      x.toUpperCase();
+      y.toLowerCase();
+    } else {
+      console.log(x);
+                
+      console.log(y);
+                
+    }
+  }
+
+  function printAll(strs: string | string[] | null) {
+    if (strs !== null) {
+      if (typeof strs === "object") {
+        for (const s of strs) {
+                        
+          //(parameter) strs: string[]
+          console.log(s);
+        }
+      } else if (typeof strs === "string") {
+        console.log(strs);
+                    
+          //(parameter) strs: string
+      }
+    }
+  }
+
+  /*
+  type Fish = { swim: () => void };
+  type Bird = { fly: () => void };
+  
+  function move(animal: Fish | Bird) {
+    if ("swim" in animal) {
+      return animal.swim();
+    }
+  
+    return animal.fly();
+  }
+  */
+
+  type Fish = { swim: () => void };
+  type Bird = { fly: () => void };
+  type Human = { swim?: () => void; fly?: () => void };
+  
+  function move(animal: Fish | Bird | Human) {
+    if ("swim" in animal) {
+      animal;
+        
+      //(parameter) animal: Fish | Human
+    } else {
+      animal;
+        
+      //(parameter) animal: Bird | Human
+    }
+  }
+
+  function logValue(x: Date | string) {
+    if (x instanceof Date) {
+      console.log(x.toUTCString());
+                
+      //(parameter) x: Date
+    } else {
+      console.log(x.toUpperCase());
+                
+      //(parameter) x: string
+    }
+  }
+
+  let x = Math.random() < 0.5 ? 10 : "hello world!";
+   
+  //let x: string | number
+  x = 1;
+  
+  console.log(x);
+            
+  //let x: number
+  x = "goodbye!";
+  
+  console.log(x);
+
+  //let x = Math.random() < 0.5 ? 10 : "hello world!";
+   
+  //let x: string | number
+  x = 1;
+  
+  console.log(x);
+            
+  //let x: number
+  x = true;
+  //Type 'boolean' is not assignable to type 'string | number'.
+  
+  console.log(x);
+
+  function padLeft(padding: number | string, input: string) {
+    if (typeof padding === "number") {
+      return " ".repeat(padding) + input;
+    }
+    return padding + input;
+  }
+
+  function example() {
+    let x: string | number | boolean;
+  
+    x = Math.random() < 0.5;
+  
+    console.log(x);
+              
+    //let x: boolean
+  
+    if (Math.random() < 0.5) {
+      x = "hello";
+      console.log(x);
+                
+      //let x: string
+    } else {
+      x = 100;
+      console.log(x);
+                
+      //let x: number
+    }
+  
+    return x;
+          
+    //let x: string | number
+  }
+
+  function isFish(pet: Fish | Bird): pet is Fish {
+    return (pet as Fish).swim !== undefined;
+  }
+
+  // Both calls to 'swim' and 'fly' are now okay.
+  let pet = getSmallPet();
+  
+  if (isFish(pet)) {
+    pet.swim();
+  } else {
+    pet.fly();
+  }
+
+  const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+  const underWater1: Fish[] = zoo.filter(isFish);
+  // or, equivalently
+  const underWater2: Fish[] = zoo.filter(isFish) as Fish[];
+  
+  // The predicate may need repeating for more complex examples
+  const underWater3: Fish[] = zoo.filter((pet): pet is Fish => {
+    if (pet.name === "sharkey") return false;
+    return isFish(pet);
+  });
+
+  interface Shape {
+    kind: "circle" | "square";
+    radius?: number;
+    sideLength?: number;
+  }
+
+  function handleShape(shape: Shape) {
+    // oops!
+    if (shape.kind === "rect") {
+      //This comparison appears to be unintentional because the types '"circle" | "square"' and '"rect"' have no overlap.
+      // ...
+    }
+  }
+
+  function getArea(shape: Shape) {
+    return Math.PI * shape.radius ** 2;
+    //'shape.radius' is possibly 'undefined'.
+  }
+
+  function getArea(shape: Shape) {
+    if (shape.kind === "circle") {
+      return Math.PI * shape.radius ** 2;
+      //'shape.radius' is possibly 'undefined'.
+    }
+  }
+
+  interface Circle {
+    kind: "circle";
+    radius: number;
+  }
+  
+  interface Square {
+    kind: "square";
+    sideLength: number;
+  }
+  
+  type Shape = Circle | Square;
+
+  function getArea(shape: Shape) {
+    return Math.PI * shape.radius ** 2;
+    // Property 'radius' does not exist on type 'Shape'.
+    // Property 'radius' does not exist on type 'Square'.
+  }
+
+  function getArea(shape: Shape) {
+    if (shape.kind === "circle") {
+      return Math.PI * shape.radius ** 2;
+                        
+      //(parameter) shape: Circle
+    }
+  }
+
+  function getArea(shape: Shape) {
+    switch (shape.kind) {
+      case "circle":
+        return Math.PI * shape.radius ** 2;
+                          
+        //(parameter) shape: Circle
+      case "square":
+        return shape.sideLength ** 2;
+                
+        //(parameter) shape: Square
+    }
+  }
+
+  type Shape = Circle | Square;
+ 
+  function getArea(shape: Shape) {
+    switch (shape.kind) {
+      case "circle":
+        return Math.PI * shape.radius ** 2;
+      case "square":
+        return shape.sideLength ** 2;
+      default:
+        const _exhaustiveCheck: never = shape;
+        return _exhaustiveCheck;
+    }
+  }
+
+  interface Triangle {
+    kind: "triangle";
+    sideLength: number;
+  }
+  
+  type Shape = Circle | Square | Triangle;
+  
+  function getArea(shape: Shape) {
+    switch (shape.kind) {
+      case "circle":
+        return Math.PI * shape.radius ** 2;
+      case "square":
+        return shape.sideLength ** 2;
+      default:
+        const _exhaustiveCheck: never = shape;
+        //Type 'Triangle' is not assignable to type 'never'.
+        return _exhaustiveCheck;
+    }
+  }
+
+
+
+
+
+
+};
+
+
+const everydayTypes = () => {
+  let obj: any = { x: 0 };
+  // None of the following lines of code will throw compiler errors.
+  // Using `any` disables all further type checking, and it is assumed
+  // you know the environment better than TypeScript.
+  //obj.foo();
+  //obj();
+  obj.bar = 100;
+  obj = "hello";
+  const n: number = obj;
+
+  let myName: string = "Alice";
+
+  // No type annotation needed -- 'myName' inferred as type 'string'
+  //let myName = "Alice";
+
+  // Parameter type annotation
+  function greet(name: string) {
+    console.log("Hello, " + name.toUpperCase() + "!!");
+  }
+
+  // Would be a runtime error if executed!
+  // greet(42);
+  // Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  function getFavoriteNumber(): number {
+    return 26;
+  }
+
+  async function getFavoriteNumber(): Promise<number> {
+    return 26;
+  }
+
+  const names = ["Alice", "Bob", "Eve"];
+ 
+  // Contextual typing for function - parameter s inferred to have type string
+  names.forEach(function (s) {
+    console.log(s.toUpperCase());
+  });
+  
+  // Contextual typing also applies to arrow functions
+  names.forEach((s) => {
+    console.log(s.toUpperCase());
+  });
+
+  // The parameter's type annotation is an object type
+  function printCoord(pt: { x: number; y: number }) {
+    console.log("The coordinate's x value is " + pt.x);
+    console.log("The coordinate's y value is " + pt.y);
+  }
+  printCoord({ x: 3, y: 7 });
+
+  function printName(obj: { first: string; last?: string }) {
+    // ...
+  }
+  // Both OK
+  printName({ first: "Bob" });
+  printName({ first: "Alice", last: "Alisson" });
+
+  function printName(obj: { first: string; last?: string }) {
+    // Error - might crash if 'obj.last' wasn't provided!
+    //console.log(obj.last.toUpperCase());
+  //'obj.last' is possibly 'undefined'.
+    if (obj.last !== undefined) {
+      // OK
+      console.log(obj.last.toUpperCase());
+    }
+  
+    // A safe alternative using modern JavaScript syntax:
+    console.log(obj.last?.toUpperCase());
+  }
+
+  function printId(id: number | string) {
+    console.log("Your ID is: " + id);
+  }
+  // OK
+  printId(101);
+  // OK
+  printId("202");
+  // Error
+  printId({ myID: 22342 });
+
+  function printId(id: number | string) {
+    console.log(id.toUpperCase());
+  // Property 'toUpperCase' does not exist on type 'string | number'.
+  //   Property 'toUpperCase' does not exist on type 'number'.
+  }
+
+  function printId(id: number | string) {
+    if (typeof id === "string") {
+      // In this branch, id is of type 'string'
+      console.log(id.toUpperCase());
+    } else {
+      // Here, id is of type 'number'
+      console.log(id);
+    }
+  }
+
+  function welcomePeople(x: string[] | string) {
+    if (Array.isArray(x)) {
+      // Here: 'x' is 'string[]'
+      console.log("Hello, " + x.join(" and "));
+    } else {
+      // Here: 'x' is 'string'
+      console.log("Welcome lone traveler " + x);
+    }
+  }
+
+  // Return type is inferred as number[] | string
+  function getFirstThree(x: number[] | string) {
+    return x.slice(0, 3);
+  }
+
+  type Point = {
+    x: number;
+    y: number;
+  };
+  
+  // Exactly the same as the earlier example
+  function printCoord(pt: Point) {
+    console.log("The coordinate's x value is " + pt.x);
+    console.log("The coordinate's y value is " + pt.y);
+  }
+  
+  printCoord({ x: 100, y: 100 });
+
+  type ID = number | string;
+
+  type UserInputSanitizedString = string;
+ 
+  function sanitizeInput(str: string): UserInputSanitizedString {
+    return sanitize(str);
+  }
+  
+  // Create a sanitized input
+  //let userInput = sanitizeInput(getInput());
+  
+  // Can still be re-assigned with a string though
+  //userInput = "new input";
+
+  interface Point {
+    x: number;
+    y: number;
+  }
+  
+  function printCoord(pt: Point) {
+    console.log("The coordinate's x value is " + pt.x);
+    console.log("The coordinate's y value is " + pt.y);
+  }
+  
+  printCoord({ x: 100, y: 100 });
+
+  //const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+
+  //const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
+
+  const x = "hello" as number;
+
+  //const a = expr as any as T;
+
+  //let changingString = "Hello World";
+  changingString = "Olá Mundo";
+  // Because `changingString` can represent any possible string, that
+  // is how TypeScript describes it in the type system
+  changingString;
+        
+  //let changingString: string
+  
+  //const constantString = "Hello World";
+  // Because `constantString` can only represent 1 possible string, it
+  // has a literal type representation
+  //constantString;
+        
+  //const constantString: "Hello World"
+
+  //let x: "hello" = "hello";
+  // OK
+  //x = "hello";
+  // ...
+  //x = "howdy";
+
+  function printText(s: string, alignment: "left" | "right" | "center") {
+    // ...
+  }
+  printText("Hello, world", "left");
+  printText("G'day, mate", "centre");
+  //Argument of type '"centre"' is not assignable to parameter of type '"left" | "right" | "center"'
+
+  function compare(a: string, b: string): -1 | 0 | 1 {
+    return a === b ? 0 : a > b ? 1 : -1;
+  }
+
+  interface Options {
+    width: number;
+  }
+  function configure(x: Options | "auto") {
+    // ...
+  }
+  configure({ width: 100 });
+  configure("auto");
+  configure("automatic");
+  //Argument of type '"automatic"' is not assignable to parameter of type 'Options | "auto"'.
+
+  /*
+  const obj = { counter: 0 };
+  if (someCondition) {
+    obj.counter = 1;
+  }
+    */
+
+  /*
+  declare function handleRequest(url: string, method: "GET" | "POST"): void;
+ 
+  const req = { url: "https://example.com", method: "GET" };
+  handleRequest(req.url, req.method);
+  Argument of type 'string' is not assignable to parameter of type '"GET" | "POST"'.
+  */
+
+  // Change 1:
+  const req = { url: "https://example.com", method: "GET" as "GET" };
+  // Change 2
+  //handleRequest(req.url, req.method as "GET");
+
+  // const req = { url: "https://example.com", method: "GET" } as const;
+  // handleRequest(req.url, req.method);
+
+  function doSomething(x: string | null) {
+    if (x === null) {
+      // do nothing
+    } else {
+      console.log("Hello, " + x.toUpperCase());
+    }
+  }
+
+  function liveDangerously(x?: number | null) {
+    // No error
+    console.log(x!.toFixed());
+  }
+
+  // Creating a bigint via the BigInt function
+  const oneHundred: bigint = BigInt(100);
+  
+  // Creating a BigInt via the literal syntax
+  const anotherHundred: bigint = 100n;
+
+  const firstName = Symbol("name");
+  const secondName = Symbol("name");
+  
+  if (firstName === secondName) {
+    //This comparison appears to be unintentional because the types 'typeof firstName' and 'typeof secondName' have no overlap.
+    // Can't ever happen
+  }
+
+};
+everydayTypes();
+
+// Accessing the property 'toLowerCase'
+// on 'message' and then calling it
+const theBasics = () => {
+  const message = "Hello World!";
+  message.toLowerCase();
+  // Calling 'message'
+  //message();
+
+  function fn(x) {
+    return x.flip();
+  }
+
+  const user = {
+    name: "Daniel",
+    age: 26,
+  };
+  //user.location; // returns undefined
+
+  const announcement = "Hello World!";
+ 
+  // How quickly can you spot the typos?
+  announcement.toLocaleLowercase();
+  announcement.toLocalLowerCase();
+  
+  // We probably meant to write this...
+  announcement.toLocaleLowerCase();
+
+  function flipCoin() {
+    // Meant to be Math.random()
+    return Math.random < 0.5;
+  }
+
+  const value = Math.random() < 0.5 ? "a" : "b";
+  if (value !== "a") {
+    // ...
+  } else if (value === "b") {
+  //This comparison appears to be unintentional because the types '"a"' and '"b"' have no overlap.
+    // Oops, unreachable
+  }
+
+  // Greets the world.
+  console.log("Hello world!");
+
+  // This is an industrial-grade general-purpose greeter function:
+  function greet(person, date) {
+    console.log(`Hello ${person}, today is ${date}!`);
+  }
+  
+  greet("Brendan");
+
+  function greet(person: string, date: Date) {
+    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  }
+
+  function greet(person: string, date: Date) {
+    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  }
+  
+  greet("Maddison", Date());
+
+  let msg = "hello there!";
+
+  "use strict";
+  function greet(person, date) {
+      console.log("Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"));
+  }
+  greet("Maddison", new Date());
+
+  `Hello ${person}, today is ${date.toDateString()}!`;
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // hello.ts
 let message: string = "Hello World";
 console.log(message);
